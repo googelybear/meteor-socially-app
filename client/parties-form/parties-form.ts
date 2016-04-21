@@ -23,7 +23,7 @@ export class PartiesForm {
         });
     }
 
-    addParty(party)  {
+    addParty(party: Party)  {
         if (this.partiesForm.valid) {
             Parties.insert({
                name: party.name,

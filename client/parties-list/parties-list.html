@@ -1,6 +1,7 @@
 <ul>
     <parties-form></parties-form>
     <li *ngFor="#party of parties">
+        <a [routerLink]="['/PartyDetails', {partyId: party._id}]">{{party.name}}</a>
         {{party.name}}
         <p>{{party.description}}</p>
         <p>{{party.location}}</p>

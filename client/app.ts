@@ -1,31 +1,27 @@
-import {Component, View, NgZone} from 'angular2/core';
+import {Component, View, NgZone, provide} from 'angular2/core';
 
 import {bootstrap} from 'angular2-meteor';
-//import {bootstrap} from 'angular2/platform/browser';
-import {PartiesForm} from 'client/parties-form/parties-form';
 
-import {Parties} from 'collections/parties';
+import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig, APP_BASE_HREF} from 'angular2/router';
 
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
+import {PartiesList} from 'client/parties-list/parties-list';
+
+import {PartyDetails} from 'client/party-details/party-details';
 
 @Component({
     selector: 'app'
 })
 @View({
-    templateUrl: 'client/app.html',
-    directives: [PartiesForm, ROUTER_DIRECTIVES]
+    template: '<router-outlet>',
+    directives: [ROUTER_DIRECTIVES]
 })
+
+@RouteConfig([
+    { path: '/', as: 'PartiesList', component: PartiesList },
+    { path: '/party/:partyId', as: 'PartyDetails', component: PartyDetails }
+])
+
 class Socially {
-
-    parties: Mongo.Cursor<Object>;
-
-    constructor () {
-        this.parties = Parties.find();
-    }
-
-    removeParty(party) {
-        Parties.remove(party._id);
-    }
 }
- 
-bootstrap(Socially, [ROUTER_PROVIDERS]);
+
+bootstrap(Socially, [ROUTER_PROVIDERS, provide(APP_BASE_HREF, { useValue: '/' })]);
